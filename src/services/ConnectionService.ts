@@ -14,7 +14,7 @@ export const ws = new io.Server(server);
 app.post('/exec', express.json(), async (req, res) => {
     try {
         const { action, args } = req.body;
-        const result = ActionService[action](...args);
+        const result = await ActionService[action](...args);
         return res.json(result);
     } catch (ex) {
         return res.status(500).json({ error: ex.message });
