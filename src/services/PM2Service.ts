@@ -3,6 +3,16 @@ import pm2 from 'pm2';
 import { Process } from '../models/Process';
 
 class PM2 {
+
+    start() {
+        return new Promise<void>((res, rej) => {
+            pm2.connect((e) => {
+                if (e) rej(e);
+                res();
+            });
+        });
+    }
+
     list() {
         return new Promise<Process[]>((res, rej) => {
             pm2.list((e, data) => {
