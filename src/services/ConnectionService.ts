@@ -5,6 +5,8 @@ import cors from 'cors';
 
 import * as ActionService from './ActionService';
 
+import { ShellSession } from './SessionManager';
+
 export const app = express();
 app.use(cors());
 
@@ -19,4 +21,21 @@ app.post('/exec', express.json(), async (req, res) => {
     } catch (ex) {
         return res.status(500).json({ error: ex.message });
     }
+});
+
+
+const shell = new ShellSession();
+
+shell.onMessage((msg, isError) => {
+    ws.send('out', { msg, isError });
+});
+
+ws.on('connection', client => {
+    client.on('write', (msg: string) => {
+        shell.write(msg);
+    });
+});
+
+process.on('SIGTERM', () => {
+    shell.close();
 });
