@@ -27,7 +27,7 @@ app.post('/exec', express.json(), async (req, res) => {
 const shell = new ShellSession();
 
 shell.onMessage((msg, isError) => {
-    ws.send('out', { msg, isError });
+    ws.emit('out', { msg, isError });
 });
 
 ws.on('connection', client => {
