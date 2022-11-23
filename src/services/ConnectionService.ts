@@ -32,11 +32,13 @@ app.post('/exec', express.json(), async (req, res) => {
 const shell = new ShellSession();
 
 shell.onMessage((msg, isError) => {
+    console.log({ msg, isError });
     ws.emit('out', { msg, isError });
 });
 
 ws.on('connection', client => {
     client.on('write', (msg: string) => {
+        console.log('write', msg);
         shell.write(msg);
     });
 });
