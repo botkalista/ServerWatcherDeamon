@@ -11,7 +11,12 @@ export const app = express();
 app.use(cors());
 
 export const server = http.createServer(app);
-export const ws = new io.Server(server, { cors: '*' });
+export const ws = new io.Server(server, {
+    cors: {
+        allowedHeaders: '*',
+        origin: '*'
+    }
+});
 
 app.post('/exec', express.json(), async (req, res) => {
     try {
