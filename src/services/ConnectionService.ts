@@ -11,7 +11,7 @@ export const app = express();
 app.use(cors());
 
 export const server = http.createServer(app);
-export const ws = new io.Server(server);
+export const ws = new io.Server(server, { cors: '*' });
 
 app.post('/exec', express.json(), async (req, res) => {
     try {
