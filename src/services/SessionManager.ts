@@ -8,18 +8,18 @@ export class ShellSession {
     shell: child.ChildProcess;
     handlers: (callback)[] = [];
 
-    constructor() { }
+    constructor() {
+        this.open();
+    }
 
     open() {
         this.shell = child.exec('sh');
         this.shell.stdout?.on('data', (buffer: Buffer) => {
             const msg = buffer.toString();
-            console.log({ msg });
             this.handlers.forEach(h => h(msg, false));
         });
         this.shell.stderr?.on('data', (buffer: Buffer) => {
             const msg = buffer.toString();
-            console.log({ msg });
             this.handlers.forEach(h => h(msg, true));
         });
     }
